@@ -82,6 +82,7 @@ window.addEventListener('load', function(ev) {
 
 		onLeaderSelected : function() {
 			App.switchTemplate(App.templates.leaderPage);
+			App.isLeader = true;
 		},
 
 		onLeaderUpdateScore : function() {
@@ -123,6 +124,7 @@ window.addEventListener('load', function(ev) {
 	var App = {
 
 		role : '',
+		isLeader : false;
 
 		initialize : function() {
 			App.templates  = {};
