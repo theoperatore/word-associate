@@ -181,11 +181,15 @@ function onLeaderStartNextRound() {
 	var newLeader;
 
 	//select a new leader
-	leaderIDX = (leaderIDX + 1) % playerName.length;
+	leaderIDX = (leaderIDX + 1) % players.length;
 	newLeader = clients[leaderIDX];
 
 	//log new leader
 	pastLeaders.push(newLeader.id);
+
+	//reinitialize game variables
+	submissionCount = 0;
+	playerWords = {};
 
 	//emit to leader 'leaderSelected'
 	newLeader.emit('leaderSelected');
@@ -202,8 +206,9 @@ function onLeaderEndGame() {
 	for (var i = 0; i < players.length; i++) {
 		playerSockets[players[i]].leave(options.room);
 		console.log('player: ', players[i], ' leaving room: ', options.room);
-		options.room = '';
 	}
+
+	options.room = '';
 }
 
 

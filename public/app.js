@@ -116,6 +116,15 @@ window.addEventListener('load', function(ev) {
 		onRoundStart : function(data) {
 			console.log('roundStart',data);
 
+			//make all inputs blank
+			App.inputs['create roomName'].value = '';
+			App.inputs['create userName'].value = '';
+			App.inputs['join roomName'].value = '';
+			App.inputs['join userName'].value = '';
+			App.inputs['suggested word'].value = '';
+			App.inputs['leader word'].value = '';
+
+
 			App.currWord = data.word;
 
 			if (App.isLeader) {
@@ -354,7 +363,8 @@ window.addEventListener('load', function(ev) {
 		},
 
 		onStartNextRound : function(ev) {
-
+			App.isLeader = false;
+			IO.socket.emit('leaderStartNextRound');
 		},
 
 		setTemplate : function(template) {
