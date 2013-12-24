@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html>
 <head>
 	<meta charset='utf-8'/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -18,6 +18,8 @@
 
 			<input type="button" class='coolButton' id="create-new-room" value="Create New Game">
 			<input type="button" class='coolButton' id="join-new-room" value="Join Game">
+			<input type='button' class='coolButton' id='how-to-play' value='How To Play'>
+			<a href="">View Source Code</a>
 		</div>
 	</div>
 
@@ -44,11 +46,11 @@
 		<div class='playerWrapper'>
 			<p id='playerName'></p>
 			<p id='playerScore'></p>
-			<p id='playerRank'></p>
 			<div style='clear:both'></div>
+			<h3 id='currWord'></h3>
 
 			<input type='text' class='coolInput' id='suggest-word-input' placeholder='Enter any Word'>
-			<input type='button' class='coolButton' id='suggest-button' value='Associate That Word'>
+			<input type='button' class='coolButton' id='suggest-button' value='Suggest'>
 		</div>
 	</div>
 
@@ -80,15 +82,31 @@
 	<div id='waiting-leader-template' class='hide'>
 		<div class='waitingWraper'>
 			<h1>Waiting for leader to submit word...</h1>
+			<h2 id='waitingLeaderPlayerName'></h2>
+			<h2 id='waitingLeaderPlayerScore'></h2>
 			<h3 id='waitingLeaderWord'></h3>
 		</div>
 	</div>
 
 	<div id='leader-update-template' class='hide'>
 		<div class='leaderUpdateWrapper'>
-			<h1>Need to settle any disputes?</h1>
+			<h1>Award anyone a point!</h1>
 			<p id='lastRoundWord'></p>
 			<ul id='leaderUpdatePlayerList'></ul>
+			<ul id='leaderWordList'></ul>
+
+			<input type='button' class='coolButton' id='start-next-round' value='Next Round'>
+			<input type='button' class='coolButton' id='end-game' value='End Game'>
+		</div>
+	</div>
+
+	<div id='game-results-template' class='hide'>
+		<div class='gameResultsWrapper'>
+			<h1>Waiting on everyone else to submit...</h1>
+			<h2 id='resultsPlayerName'></h2>
+			<h2 id='resultsPlayerScore'></h2>
+			<h2 id='resultsLastRoundWord'></h2>
+			<h3 id='resultsYourWord'></h3>
 		</div>
 	</div>
 

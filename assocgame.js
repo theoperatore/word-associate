@@ -1,8 +1,8 @@
 var io, currSocket, currWord;
-var playerWords   = [], //index is socket id, value is submitted word for round
-	playerNames   = [], //index is playerName, value is socket id
+var playerWords   = {}, //playerName => suggested word
 	playerSockets = [], //index is playerName, value is matching socket
 	players       = [], //holds connected player names
+	submissionCount = 0,
 	options = {
 		host : 'undefined',
 		room : ''
@@ -32,6 +32,7 @@ exports.initialize = function(sio, socket) {
 	currSocket.on('leaderTypeWord',       onLeaderTypeWord);
 	currSocket.on('leaderUpdatePlayer',   onLeaderUpdatePlayer);
 	currSocket.on('leaderStartNextRound', onLeaderStartNextRound);
+	currSocket.on('leaderEndGame',        onLeaderEndGame);
 
 }
 
@@ -51,7 +52,6 @@ function onCreateNewGame(data) {
 	//setup the options
 	options.room = gameRoom;
 
-	playerNames[data.playerName] = this.id;
 	playerSockets[data.playerName] = this;
 	players.push(data.playerName);
 
@@ -68,9 +68,10 @@ function onStartNewGame() {
 	var randClientIdx;
 
 	//reinitialize some stuff
-	playerWords = [];
+	playerWords = {};
 	pastLeaders = [];
 	leaderIDX   = -1;
+	submissionCount = 0;
 
 	//get a list of all clients in this room
 	clients = io.sockets.clients(options.room);
@@ -90,6 +91,8 @@ function onStartNewGame() {
 	//tell the other players
 	//io.sockets.in(options.room).emit('waitingForLeader');
 	clients[randClientIdx].broadcast.in(options.room).emit('waitingForLeader');
+
+	console.log('starting new game for players:', players);
 }
 
 /****************************
@@ -104,7 +107,6 @@ function onPlayerJoin(data) {
 	if (roomName === options.room) {
 
 		//add player name to array
-		playerNames[data.playerName] = this.id;
 		playerSockets[data.playerName] = this;
 		players.push(data.playerName);
 
@@ -113,7 +115,7 @@ function onPlayerJoin(data) {
 		console.log('connected players: ', players);
 
 		//emit event playerJoined to all in room
-		this.emit('playerJoined', { playerList : players , roomName : options.room });
+		this.emit('playerJoined', { playerList : players , roomName : options.room, playerName : data.playerName });
 		this.broadcast.in(options.room).emit('playerListUpdate', { player : data.playerName });
 	}
 	else {
@@ -129,17 +131,17 @@ function onPlayerJoin(data) {
 function onPlayerSubmitWord(data) {
 
 	//add word to player words
-	playerWords[this.id] = data.word;
-	console.log(playerWords);
+	playerWords[data.playerName] = data.word;
+	submissionCount++;
+
+	this.emit('pendingOthers');
+	clients[leaderIDX].emit('receivedWord', { playerName : data.playerName, word : data.word });
 
 	//if every player has submitted a word,
-	if (playerWords.length === playerNames.length) {
-		
-		//make a tally of matched words
-
+	if (submissionCount === (players.length - 1)) {
 
 		//emit to players 'roundEnd' and the new score additions
-		io.sockets.in(options.room).emit('roundEnd');
+		io.sockets.in(options.room).emit('roundEnd', { words : playerWords, playerList : players });
 	}
 }
 
@@ -152,7 +154,7 @@ function onLeaderSubmitWord(data) {
 	currWord = data.word || "Brains...";
 
 	//emit roundStart to room
-	io.sockets.in(room).emit('roundStart', { word : currWord });
+	io.sockets.in(options.room).emit('roundStart', { word : currWord, playerList : players });
 }
 
 //cool effect for others to see the leader typing the new word
@@ -191,6 +193,17 @@ function onLeaderStartNextRound() {
 
 	//emit to players 'waitingForLeader'
 	newLeader.broadcast.emit('waitingForLeader');
+}
+
+//called when a leader decides to end the game
+function onLeaderEndGame() {
+	io.sockets.in(options.room).emit('endGame');
+
+	for (var i = 0; i < players.length; i++) {
+		playerSockets[players[i]].leave(options.room);
+		console.log('player: ', players[i], ' leaving room: ', options.room);
+		options.room = '';
+	}
 }
 
 

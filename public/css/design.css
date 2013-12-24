@@ -1,3 +1,25 @@
 .hide {
 	display:none;
 }
+
+/* 
+
+#1eff00 green for correct
+#3867ff blue  for background
+#f50000 red   for incorrect
+
+*/
+
+.pending {
+	background-color: #f50000;
+	border-top: 1px solid #333333;
+	border-bottom: 1px solid #333333;
+}
+
+.submitted {
+	background-color: #1eff00;
+}
+
+.selected {
+	background-color: #0f8000; 
+}
