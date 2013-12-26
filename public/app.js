@@ -386,4 +386,6 @@ window.addEventListener('load', function(ev) {
 
 	//set the starting page
 	App.setTemplate(App.templates.startPage);
+
+	//textFit(document.getElementById('start-template'), {minFontSize: 36, maxFontSize: 50, widthOnly: true});
 });
