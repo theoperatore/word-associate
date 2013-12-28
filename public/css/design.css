@@ -1,18 +1,11 @@
 html {
-	background-color: #3867ff;
+	background-color: #0048ff;
+	/*#3867ff;*/
 }
 
 .hide {
 	display:none;
 }
-
-/* 
-
-#1eff00 green for correct
-#3867ff blue  for background
-#f50000 red   for incorrect
-
-*/
 
 .pending {
 	background-color: #f50000;

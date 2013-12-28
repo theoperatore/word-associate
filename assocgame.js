@@ -1,7 +1,8 @@
 var io, currSocket, currWord;
 var playerWords   = {}, //playerName => suggested word
-	playerSockets = [], //index is playerName, value is matching socket
+	playerSockets = {}, //index is playerName, value is matching socket
 	players       = [], //holds connected player names
+	socketToName  = {}, //index is socket.id, value is playerName
 	submissionCount = 0,
 	options = {
 		host : 'undefined',
@@ -33,6 +34,28 @@ exports.initialize = function(sio, socket) {
 	currSocket.on('leaderUpdatePlayer',   onLeaderUpdatePlayer);
 	currSocket.on('leaderStartNextRound', onLeaderStartNextRound);
 	currSocket.on('leaderEndGame',        onLeaderEndGame);
+}
+
+//handle a disconnection
+exports.disconnect = function(socket) {
+	var playerName;
+
+	playerName = socketToName[socket.id] || 'undefined';
+	console.log(playerName);
+
+	for (var i = 0; i < players.length; i++) {
+		if (players[i] === playerName) {
+			console.log('found match', players[i], playerName);
+
+			var p = players.splice(i,1);
+			console.log('removing player:',p);
+			break;
+		}
+	}
+
+	console.log(players);
+
+	//TODO : emit event 'playerListUpdate' for disconnecting characters
 
 }
 
@@ -51,6 +74,8 @@ function onCreateNewGame(data) {
 
 	//setup the options
 	options.room = gameRoom;
+	players = [];
+	socketToName[this.id] = data.playerName;
 
 	playerSockets[data.playerName] = this;
 	players.push(data.playerName);
@@ -109,6 +134,7 @@ function onPlayerJoin(data) {
 		//add player name to array
 		playerSockets[data.playerName] = this;
 		players.push(data.playerName);
+		socketToName[this.id] = data.playerName;
 
 		this.join(options.room);
 		console.log('player joined: ', data.playerName);
@@ -165,7 +191,7 @@ function onLeaderTypeWord(data) {
 
 }
 
-//called between rounds when there needs to be a score adjustment
+//called when a leader selects a player's score
 function onLeaderUpdatePlayer(data) {
 	var currPlayer;
 
@@ -210,6 +236,5 @@ function onLeaderEndGame() {
 
 	options.room = '';
 }
-
 
 
