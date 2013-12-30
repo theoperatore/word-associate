@@ -1,10 +1,18 @@
 html {
-	background-color: #0048ff;
-	/*#3867ff;*/
+	background-color: #3867ff;
+	/* #0048ff;*/
+
+	text-align: center;
+	font-family: sans-serif;
 }
 
 .hide {
 	display:none;
+}
+
+input {
+	display: block;
+	font-size:1.5em;
 }
 
 .pending {

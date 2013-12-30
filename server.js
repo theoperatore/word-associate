@@ -21,10 +21,4 @@ io.sockets.on('connection', function(socket) {
 	console.log('client connected', socket.id);
 
 	ag.initialize(io,socket);
-
-	socket.on('disconnect', function() {
-		ag.disconnect(socket);
-
-		console.log('client disconnect', socket.id);
-	});
 });

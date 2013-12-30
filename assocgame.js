@@ -10,7 +10,8 @@ var playerWords   = {}, //playerName => suggested word
 	},
 	pastLeaders = [], //index is numerical, value is socket id
 	leaderIDX   = -1,
-	clients;
+	clients,
+	gameStarted = false;
 
 exports.initialize = function(sio, socket) {
 	io         = sio;
@@ -34,31 +35,33 @@ exports.initialize = function(sio, socket) {
 	currSocket.on('leaderUpdatePlayer',   onLeaderUpdatePlayer);
 	currSocket.on('leaderStartNextRound', onLeaderStartNextRound);
 	currSocket.on('leaderEndGame',        onLeaderEndGame);
-}
 
-//handle a disconnection
-exports.disconnect = function(socket) {
-	var playerName;
+	currSocket.on('disconnect', function() {
+		var playerName;
 
-	playerName = socketToName[socket.id] || 'undefined';
-	console.log(playerName);
+		playerName = socketToName[currSocket.id] || 'undefined';
 
-	for (var i = 0; i < players.length; i++) {
-		if (players[i] === playerName) {
-			console.log('found match', players[i], playerName);
+		console.log('client disconnected', playerName, currSocket.id);
 
-			var p = players.splice(i,1);
-			console.log('removing player:',p);
-			break;
+		for (var i = 0; i < players.length; i++) {
+			if (players[i] === playerName) {
+				console.log('found match', players[i], playerName);
+
+				var p = players.splice(i,1);
+				console.log('removing player:',p);
+				break;
+			}
 		}
-	}
 
-	console.log(players);
+		if (options.room !== '') {
 
-	//TODO : emit event 'playerListUpdate' for disconnecting characters
+			//TODO: Update client 'onPlayerListUpdate' to display the cached version of players 
+			//currSocket.broadcast.in(options.room).emit('playerListUpdate', { players : players });
+		}
 
+		console.log(players);
+	});
 }
-
 /****************************
  *     Host Functions       *
  ****************************/
@@ -110,12 +113,12 @@ function onStartNewGame() {
 	//console.log(clients[randClientIdx].id);
 
 	//tell the leader to pick a word
-	clients[randClientIdx].emit('leaderSelected');
+	clients[randClientIdx].emit('leaderSelected', { gameStarted : gameStarted });
 	console.log('leader: ', clients[randClientIdx].id );
 
 	//tell the other players
 	//io.sockets.in(options.room).emit('waitingForLeader');
-	clients[randClientIdx].broadcast.in(options.room).emit('waitingForLeader');
+	clients[randClientIdx].broadcast.in(options.room).emit('waitingForLeader', { gameStarted : gameStarted });
 
 	console.log('starting new game for players:', players);
 }
@@ -141,8 +144,8 @@ function onPlayerJoin(data) {
 		console.log('connected players: ', players);
 
 		//emit event playerJoined to all in room
-		this.emit('playerJoined', { playerList : players , roomName : options.room, playerName : data.playerName });
-		this.broadcast.in(options.room).emit('playerListUpdate', { player : data.playerName });
+		this.emit('playerJoined', { playerList : players , roomName : options.room, playerName : data.playerName, gameStarted : gameStarted });
+		this.broadcast.in(options.room).emit('playerListUpdate', { player : data.playerName, gameStarted : gameStarted });
 	}
 	else {
 

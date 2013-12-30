@@ -57,8 +57,13 @@ window.addEventListener('load', function(ev) {
 		},
 
 		onPlayerListUpdate : function(data) {
+
+			//TODO: update this method to clear the list, update cached playerList, display new playerList
+			//OR to only add/remove the changed player based on which event is emitted.
 			console.log('player list updated:', data, App.role);
 
+
+			//create either an 'li' or 'input' element for each player
 			var tmp = document.createElement('li');
 			tmp.innerHTML = data.player;
 
@@ -215,6 +220,7 @@ window.addEventListener('load', function(ev) {
 					}
 				}
 			}
+
 		},
 
 		onStartGame : function() {
@@ -377,6 +383,8 @@ window.addEventListener('load', function(ev) {
 			this.templates.currTemplate = template;
 			template.classList.remove('hide');
 
+			console.log(this.templates.currTemplate, 'to', template);
+
 		}
 	};
 
@@ -386,6 +394,4 @@ window.addEventListener('load', function(ev) {
 
 	//set the starting page
 	App.setTemplate(App.templates.startPage);
-
-	//textFit(document.getElementById('start-template'), {minFontSize: 36, maxFontSize: 50, widthOnly: true});
 });

@@ -5,115 +5,112 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="css/design.css">
 
-	<title>Word Association</title>
+	<title>Word Association CSS TEST</title>
 </head>
 <body>
-	<div id='mainView'></div>
+	<div id='mainView'>
+		<!-- templates / game state views -->
+		<div id='start-template' class='separate'>
+			<div class="startWrapper">
+				<h1>Word Association</h1>
+				<p>A Battle of Wits and Inside Jokes</p>
 
-	<!-- templates / game state views -->
-	<div id='start-template' class='hide'>
-		<div class="startWrapper">
-			<h1>Word Association</h1>
-			<p>A Battle of Wits and Inside Jokes</p>
-
-			<input type="button" class='coolButton' id="create-new-room" value="Create New Game">
-			<input type="button" class='coolButton' id="join-new-room" value="Join Game">
-			<input type='button' class='coolButton' id='how-to-play' value='How To Play'>
-			<a href="">View Source Code</a>
+				<input type="button" class='coolButton' id="create-new-room" value="Create New Game">
+				<input type="button" class='coolButton' id="join-new-room" value="Join Game">
+				<input type='button' class='coolButton' id='how-to-play' value='How To Play'>
+				<a href="">View Source Code</a>
+			</div>
 		</div>
-	</div>
 
-	<div id='create-template' class='hide'>
-		<div class='createWrapper'>
-			<h1>Create a new game room</h1>
-			<input type='text' class='coolInput' id='createRoomName' placeholder='Enter a Room Name'>
-			<input type='text' class='coolInput' id='createUserName' placeholder='Enter Your Name'>
-			<input type='button' class='coolButton' id='create-room' value='Create'>
+		<div id='create-template' class='separate'>
+			<div class='createWrapper'>
+				<h1>Create a new game room</h1>
+				<input type='text' class='coolInput' id='createRoomName' placeholder='Enter a Room Name'>
+				<input type='text' class='coolInput' id='createUserName' placeholder='Enter Your Name'>
+				<input type='button' class='coolButton' id='create-room' value='Create'>
+			</div>
 		</div>
-	</div>
-	
-	<div id='join-template' class='hide'>
-		<div class='joinWrapper'>
-			<h1>Join a Room</h1>
-			<input type='text' class='coolInput' id='joinRoomName' placeholder='Enter a Room Name'>
-			<p class='helpText'>Capitalization does not matter, only spacing and punctuation</p>
-			<input type='text' class='coolInput' id='joinUserName' placeholder='Enter Your Name'>
-			<input type='button' class='coolButton' id='join-room' value='Join Room'>
+		
+		<div id='join-template' class='separate'>
+			<div class='joinWrapper'>
+				<h1>Join a Room</h1>
+				<input type='text' class='coolInput' id='joinRoomName' placeholder='Enter a Room Name'>
+				<input type='text' class='coolInput' id='joinUserName' placeholder='Enter Your Name'>
+				<input type='button' class='coolButton' id='join-room' value='Join Room'>
+			</div>
 		</div>
-	</div>
 
-	<div id='player-template' class='hide'>
-		<div class='playerWrapper'>
-			<p id='playerName'></p>
-			<p id='playerScore'></p>
-			<div style='clear:both'></div>
-			<h3 id='currWord'></h3>
+		<div id='player-template' class='separate'>
+			<div class='playerWrapper'>
+				<p id='playerName'></p>
+				<p id='playerScore'></p>
+				<div style='clear:both'></div>
+				<h3 id='currWord'></h3>
 
-			<input type='text' class='coolInput' id='suggest-word-input' placeholder='Enter any Word'>
-			<input type='button' class='coolButton' id='suggest-button' value='Suggest'>
+				<input type='text' class='coolInput' id='suggest-word-input' placeholder='Enter any Word'>
+				<input type='button' class='coolButton' id='suggest-button' value='Suggest'>
+			</div>
 		</div>
-	</div>
 
-	<div id='leader-template' class='hide'>
-		<div class='leaderWrapper'>
-			<h1>Suggest a Word</h1>
-			<input type='text' class='coolInput' id='word-input' placeholder='Any word...'>
-			<input type='button' class='coolButton' id='submit-button' value='Submit'>
+		<div id='leader-template' class='separate'>
+			<div class='leaderWrapper'>
+				<h1>Suggest a Word</h1>
+				<input type='text' class='coolInput' id='word-input' placeholder='Any word...'>
+				<input type='button' class='coolButton' id='submit-button' value='Submit'>
+			</div>
 		</div>
-	</div>
 
-	<div id='waiting-player-template' class='hide'>
-		<div class='waitingWraper'>
-			<h1>Waiting for players to join:</h1>
-			<h3 id='waitingPlayerRoomName'></h3>
-			<ul id='waitingPlayerList'></ul>
+		<div id='waiting-player-template' class='separate'>
+			<div class='waitingWraper'>
+				<h1>Waiting for players to join:</h1>
+				<h3 id='waitingPlayerRoomName'></h3>
+				<ul id='waitingPlayerList'></ul>
+			</div>
 		</div>
-	</div>
 
-	<div id='waiting-host-template' class='hide'>
-		<div class='waitingWraper'>
-			<h1>Waiting for players to join:</h1>
-			<h3 id='waitingHostRoomName'></h3>
-			<ul id='waitingHostPlayerList'></ul>
-			<input type='button' class='coolButton' id='start-game' value='Start Game!'>
+		<div id='waiting-host-template' class='separate'>
+			<div class='waitingWraper'>
+				<h1>Waiting for players to join:</h1>
+				<h3 id='waitingHostRoomName'></h3>
+				<ul id='waitingHostPlayerList'></ul>
+				<input type='button' class='coolButton' id='start-game' value='Start Game!'>
+			</div>
 		</div>
-	</div>
 
-	<div id='waiting-leader-template' class='hide'>
-		<div class='waitingWraper'>
-			<h1>Waiting for leader to submit word...</h1>
-			<h2 id='waitingLeaderPlayerName'></h2>
-			<h2 id='waitingLeaderPlayerScore'></h2>
-			<h3 id='waitingLeaderWord'></h3>
+		<div id='waiting-leader-template' class='separate'>
+			<div class='waitingWraper'>
+				<h1>Waiting for leader to submit word...</h1>
+				<h2 id='waitingLeaderPlayerName'></h2>
+				<h2 id='waitingLeaderPlayerScore'></h2>
+				<h3 id='waitingLeaderWord'></h3>
+			</div>
 		</div>
-	</div>
 
-	<div id='leader-update-template' class='hide'>
-		<div class='leaderUpdateWrapper'>
-			<h1>Award anyone a point!</h1>
-			<p id='lastRoundWord'></p>
-			<ul id='leaderUpdatePlayerList'></ul>
-			<ul id='leaderWordList'></ul>
+		<div id='leader-update-template' class='separate'>
+			<div class='leaderUpdateWrapper'>
+				<h1>Award anyone a point!</h1>
+				<p id='lastRoundWord'></p>
+				<ul id='leaderUpdatePlayerList'></ul>
+				<ul id='leaderWordList'></ul>
 
-			<input type='button' class='coolButton' id='start-next-round' value='Next Round'>
-			<input type='button' class='coolButton' id='end-game' value='End Game'>
+				<input type='button' class='coolButton' id='start-next-round' value='Next Round'>
+				<input type='button' class='coolButton' id='end-game' value='End Game'>
+			</div>
 		</div>
-	</div>
 
-	<div id='game-results-template' class='hide'>
-		<div class='gameResultsWrapper'>
-			<h1>Waiting on everyone else to submit...</h1>
-			<h2 id='resultsPlayerName'></h2>
-			<h2 id='resultsPlayerScore'></h2>
-			<h2 id='resultsLastRoundWord'></h2>
-			<h3 id='resultsYourWord'></h3>
+		<div id='game-results-template' class='separate'>
+			<div class='gameResultsWrapper'>
+				<h1>Waiting on everyone else to submit...</h1>
+				<h2 id='resultsPlayerName'></h2>
+				<h2 id='resultsPlayerScore'></h2>
+				<h2 id='resultsLastRoundWord'></h2>
+				<h3 id='resultsYourWord'></h3>
+			</div>
 		</div>
 	</div>
 
 	<!-- load in other scripts -->
 	<script src="/socket.io/socket.io.js"></script>
-	<script src="libs/textFit/textFit.min.js" type="text/javascript"></script>
-	<script src="libs/textFit/textFit.js" type="text/javascript"></script>
-	<script type="text/javascript" src='app.js'></script>
+	<script src="app.js" type="text/javascript"></script>
 </body>
 </html>
