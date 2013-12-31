@@ -1,9 +1,25 @@
 html {
-	background-color: #3867ff;
-	/* #0048ff;*/
+	background-color: #93d0ea;
+	/* #0048ff; #3867ff; #668aff;*/
+	font-family: 'Cantora One',sans-serif;
+}
 
-	text-align: center;
-	font-family: sans-serif;
+#mainView {
+	/*text-align: center;*/
+
+	color: #333333;
+
+}
+
+ul,li {
+	text-decoration: none;
+	list-style: none;
+}
+
+h1 {
+	/*text-shadow: #333333 3px 3px;*/
+	text-shadow:1px 1px 0 rgba(255,255,255,0.4);
+	font-size:2em;
 }
 
 .hide {
@@ -12,7 +28,47 @@ html {
 
 input {
 	display: block;
-	font-size:1.5em;
+	/*margin: 0 auto;*/
+	margin-top:0.5em;
+	margin-bottom: 0.5em;
+	/* font-size:1.25em; */
+}
+
+.coolButton {
+
+}
+
+/*input[type=button] {
+	-webkit-appearance:none;
+	border-radius:5px;
+	background-color: #a5d16d;
+	border:none;
+	color:#ebebeb;
+	text-shadow: 1px 1px 0 rgba(255,255,255,0.4);
+	padding:0.25em 1em 0.25em 1em;
+
+	-webkit-box-shadow: inset 1px -5px 10px #6d9b31;
+	-moz-box-shadow: inset 1px -5px 10px #6d9b31;
+	-o-box-shadow: inset 1px -5px 10px #6d9b31;
+	box-shadow: inset 1px -5px 10px #6d9b31;
+
+}
+*/
+
+input[type=button] {
+	-webkit-appearance: none;
+	border:none;
+	background-color: #93d0ea;
+	font-family: 'Cantora One', sans-serif;
+	font-size:1em;
+	color:#333333;
+	text-shadow:1px 1px 0 rgba(255,255,255,0.4);
+}
+
+a {
+	text-decoration: none;
+	font-size:0.75em;
+	color:#333333;
 }
 
 .pending {
@@ -22,7 +78,8 @@ input {
 }
 
 .submitted {
-	background-color: #1eff00;
+	background-color: #a5d16d;
+	/* 1eff00; */
 }
 
 .selected {

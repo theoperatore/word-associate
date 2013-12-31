@@ -2,27 +2,29 @@
 <html>
 <head>
 	<meta charset='utf-8'/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, minimal-ui">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<link href='http://fonts.googleapis.com/css?family=Cantora+One' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="css/design.css">
 
-	<title>Word Association CSS TEST</title>
+	<title>Word Association</title>
 </head>
 <body>
 	<div id='mainView'>
 		<!-- templates / game state views -->
-		<div id='start-template' class='separate'>
+		<div id='start-template' class='hide'>
 			<div class="startWrapper">
 				<h1>Word Association</h1>
 				<p>A Battle of Wits and Inside Jokes</p>
 
-				<input type="button" class='coolButton' id="create-new-room" value="Create New Game">
-				<input type="button" class='coolButton' id="join-new-room" value="Join Game">
-				<input type='button' class='coolButton' id='how-to-play' value='How To Play'>
+				<input type="button" class='coolButton' id="create-new-room" value="> Create New Game">
+				<input type="button" class='coolButton' id="join-new-room" value="> Join Game">
+				<input type='button' class='coolButton' id='how-to-play' value='> How To Play'>
 				<a href="">View Source Code</a>
 			</div>
 		</div>
 
-		<div id='create-template' class='separate'>
+		<div id='create-template' class='hide'>
 			<div class='createWrapper'>
 				<h1>Create a new game room</h1>
 				<input type='text' class='coolInput' id='createRoomName' placeholder='Enter a Room Name'>
@@ -31,7 +33,7 @@
 			</div>
 		</div>
 		
-		<div id='join-template' class='separate'>
+		<div id='join-template' class='hide'>
 			<div class='joinWrapper'>
 				<h1>Join a Room</h1>
 				<input type='text' class='coolInput' id='joinRoomName' placeholder='Enter a Room Name'>
@@ -40,7 +42,7 @@
 			</div>
 		</div>
 
-		<div id='player-template' class='separate'>
+		<div id='player-template' class='hide'>
 			<div class='playerWrapper'>
 				<p id='playerName'></p>
 				<p id='playerScore'></p>
@@ -52,7 +54,7 @@
 			</div>
 		</div>
 
-		<div id='leader-template' class='separate'>
+		<div id='leader-template' class='hide'>
 			<div class='leaderWrapper'>
 				<h1>Suggest a Word</h1>
 				<input type='text' class='coolInput' id='word-input' placeholder='Any word...'>
@@ -60,24 +62,28 @@
 			</div>
 		</div>
 
-		<div id='waiting-player-template' class='separate'>
+		<div id='waiting-player-template' class='hide'>
 			<div class='waitingWraper'>
 				<h1>Waiting for players to join:</h1>
+				<label>Game Room: </label>
 				<h3 id='waitingPlayerRoomName'></h3>
+				<label>Players in game room: </label>
 				<ul id='waitingPlayerList'></ul>
 			</div>
 		</div>
 
-		<div id='waiting-host-template' class='separate'>
+		<div id='waiting-host-template' class='hide'>
 			<div class='waitingWraper'>
 				<h1>Waiting for players to join:</h1>
+				<label>Game Room: </label>
 				<h3 id='waitingHostRoomName'></h3>
+				<label>Players in game room: </label>
 				<ul id='waitingHostPlayerList'></ul>
 				<input type='button' class='coolButton' id='start-game' value='Start Game!'>
 			</div>
 		</div>
 
-		<div id='waiting-leader-template' class='separate'>
+		<div id='waiting-leader-template' class='hide'>
 			<div class='waitingWraper'>
 				<h1>Waiting for leader to submit word...</h1>
 				<h2 id='waitingLeaderPlayerName'></h2>
@@ -86,7 +92,7 @@
 			</div>
 		</div>
 
-		<div id='leader-update-template' class='separate'>
+		<div id='leader-update-template' class='hide'>
 			<div class='leaderUpdateWrapper'>
 				<h1>Award anyone a point!</h1>
 				<p id='lastRoundWord'></p>
@@ -98,7 +104,7 @@
 			</div>
 		</div>
 
-		<div id='game-results-template' class='separate'>
+		<div id='game-results-template' class='hide'>
 			<div class='gameResultsWrapper'>
 				<h1>Waiting on everyone else to submit...</h1>
 				<h2 id='resultsPlayerName'></h2>
