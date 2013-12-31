@@ -6,7 +6,8 @@ var playerWords   = {}, //playerName => suggested word
 	submissionCount = 0,
 	options = {
 		host : 'undefined',
-		room : ''
+		room : '',
+		mode : ''
 	},
 	pastLeaders = [], //index is numerical, value is socket id
 	leaderIDX   = -1,
@@ -77,6 +78,7 @@ function onCreateNewGame(data) {
 
 	//setup the options
 	options.room = gameRoom;
+	options.mode = data.mode;
 	players = [];
 	socketToName[this.id] = data.playerName;
 
@@ -238,6 +240,7 @@ function onLeaderEndGame() {
 	}
 
 	options.room = '';
+	options.mode = '';
 }
 
 

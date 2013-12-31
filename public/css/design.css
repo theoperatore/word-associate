@@ -65,6 +65,14 @@ input[type=button] {
 	text-shadow:1px 1px 0 rgba(255,255,255,0.4);
 }
 
+input[type=radio] {
+	display:inline-block;
+}
+
+label {
+	display:block;
+}
+
 a {
 	text-decoration: none;
 	font-size:0.75em;

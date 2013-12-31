@@ -192,9 +192,12 @@ window.addEventListener('load', function(ev) {
 				i,
 				tmp;
 
+			//update the account for modes
+
 			App.roundOver = true;
 
-			if (App.isLeader) {
+			//update players for CAH mode
+			if (App.isLeader && App.mode === 'useCAHMode') {
 				//empty out playerList
 				while (App.lists.leaderUpdatePlayerList.firstChild) {
 					App.lists.leaderUpdatePlayerList.removeChild(App.lists.leaderUpdatePlayerList.firstChild);
@@ -219,6 +222,10 @@ window.addEventListener('load', function(ev) {
 						App.lists.leaderUpdatePlayerList.appendChild(tmp);
 					}
 				}
+			}
+			//using different mode
+			else if (App.isLeader && App.mode === 'useCOFMode') {
+				
 			}
 
 		},
@@ -248,6 +255,7 @@ window.addEventListener('load', function(ev) {
 		roundOver     : false,
 		currWord      : '',
 		suggestedWord : '',
+		mode          : '',
 
 		initialize : function() {
 			App.templates  = {};
@@ -289,6 +297,8 @@ window.addEventListener('load', function(ev) {
 			App.inputs['join userName']   = document.getElementById('joinUserName');
 			App.inputs['suggested word']  = document.getElementById('suggest-word-input');
 			App.inputs['leader word']     = document.getElementById('word-input');
+			App.inputs['mode cah']        = document.getElementById('cahMode');
+			App.inputs['mode cof']        = document.getElementById('cofMode');
 
 			//cache player lists
 			App.lists.leaderUpdatePlayerList = document.getElementById('leaderUpdatePlayerList');
@@ -308,6 +318,11 @@ window.addEventListener('load', function(ev) {
 			var room     = App.inputs['create roomName'].value,
 				username = App.inputs['create userName'].value;
 
+			//get the selected mode
+			App.mode = (App.inputs['mode cah'].checked) ? App.inputs['mode cah'].value : App.inputs['mode cof'].value;
+
+			console.log(App.mode);
+
 			if (room === '') {
 				alert('Enter a Room Name!');
 			}
@@ -315,7 +330,7 @@ window.addEventListener('load', function(ev) {
 				alert('Enter a Player Name!');
 			}
 			else {
-				IO.socket.emit('createNewGame', { roomName : room, playerName : username });
+				IO.socket.emit('createNewGame', { roomName : room, playerName : username, mode : App.mode });
 			}
 		},
 
