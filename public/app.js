@@ -53,7 +53,7 @@ window.addEventListener('load', function(ev) {
 		},
 
 		onPlayerLeft : function() {
-
+			
 		},
 
 		onPlayerListUpdate : function(data) {

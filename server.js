@@ -1,5 +1,11 @@
+/********************************
+ * Word Association Game Server *
+ *      Version: 0.5.1          *
+ *******************************/
+
 var express = require('express'),
-	path    = require('path');
+	path    = require('path'),
+	port    = 8080;
 
 var app = express();
 
@@ -10,7 +16,7 @@ var app = express();
 		app.use(express.static(path.join(__dirname, 'public')));
 	});
 
-var server = require('http').createServer(app).listen(8080),
+var server = require('http').createServer(app).listen(port),
 	io     = require('socket.io').listen(server),
 	ag     = require('./assocgame');
 

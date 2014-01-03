@@ -1,3 +1,19 @@
+/********************************************************
+ *    TODO LIST                                         *
+ *                                                      *
+ *  1. account for different modes: CAH or COF          *
+ *  2. implement player leaving events                  *
+ *  3. clean up variables                               *
+ ********************************************************/
+
+//Create new data structure to handle players?
+var Player = function(name,socket) {
+	this.name   = name;
+	this.socket = socket;
+	this.id     = socket.id;
+	this.submittedWord = '';
+}
+
 var io, currSocket, currWord;
 var playerWords   = {}, //playerName => suggested word
 	playerSockets = {}, //index is playerName, value is matching socket
@@ -12,7 +28,8 @@ var playerWords   = {}, //playerName => suggested word
 	pastLeaders = [], //index is numerical, value is socket id
 	leaderIDX   = -1,
 	clients,
-	gameStarted = false;
+	gameStarted = false,
+	playerObjs = [];
 
 exports.initialize = function(sio, socket) {
 	io         = sio;
@@ -56,8 +73,8 @@ exports.initialize = function(sio, socket) {
 
 		if (options.room !== '') {
 
-			//TODO: Update client 'onPlayerListUpdate' to display the cached version of players 
-			//currSocket.broadcast.in(options.room).emit('playerListUpdate', { players : players });
+			//TODO: Update client 'playerListUpdate' or 'playerLeft'
+			//currSocket.broadcast.in(options.room).emit('playerLeft', { players : players });
 		}
 
 		console.log(players);
@@ -82,8 +99,12 @@ function onCreateNewGame(data) {
 	players = [];
 	socketToName[this.id] = data.playerName;
 
+
 	playerSockets[data.playerName] = this;
 	players.push(data.playerName);
+
+	playerObjs.push(new Player(data.playerName, this));
+	console.log(playerObjs);
 
 	//host joins this room
 	this.join(gameRoom);
@@ -141,6 +162,9 @@ function onPlayerJoin(data) {
 		players.push(data.playerName);
 		socketToName[this.id] = data.playerName;
 
+		playerObjs.push(new Player(data.playerName, this));
+		console.log(playerObjs);
+
 		this.join(options.room);
 		console.log('player joined: ', data.playerName);
 		console.log('connected players: ', players);
@@ -165,11 +189,51 @@ function onPlayerSubmitWord(data) {
 	playerWords[data.playerName] = data.word;
 	submissionCount++;
 
+	for (var i = 0; i < playerObjs.length; i++) {
+		if (playerObjs[i].name === data.playerName) {
+			playerObjs[i].submittedWord = data.word;
+
+			console.log(playerObjs[i].name, ' submitted: ', playerObjs[i].submittedWord);
+		}
+	}
+
 	this.emit('pendingOthers');
 	clients[leaderIDX].emit('receivedWord', { playerName : data.playerName, word : data.word });
 
 	//if every player has submitted a word,
 	if (submissionCount === (players.length - 1)) {
+
+		//if cof mode, compare answers and send word/players to entire room and score updates to scoring players
+		if (options.mode === 'useCOFMode') {
+			console.log('Scoring Circle of Friends Mode...');
+
+			//loop through all players
+
+				//add player word to countingObject, indexed by word.
+
+
+			//new var for currWinningWord
+			//new var for timesEntered
+			//loop through counted words 
+
+				//if (counted words times > timeEntered) 
+
+					//currWinningWord = curr counted word index
+					//timesEntered = curr counted word times
+
+			
+				//handle a tie
+
+			//end loop
+
+			//loop through playerObjs
+
+				//if (playerObjs submittedWord === currWinningWord) 
+
+					//emit to that player score change
+
+			//end loop
+		}
 
 		//emit to players 'roundEnd' and the new score additions
 		io.sockets.in(options.room).emit('roundEnd', { words : playerWords, playerList : players });
@@ -242,5 +306,3 @@ function onLeaderEndGame() {
 	options.room = '';
 	options.mode = '';
 }
-
-
